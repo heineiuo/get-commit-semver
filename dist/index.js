@@ -95,7 +95,7 @@ exports.last = last;
 
 const semver = __webpack_require__(876);
 const simpleGit = __webpack_require__(57);
-const outputs = __webpack_require__(771);
+const { outputs } = __webpack_require__(771);
 
 async function getCommitsBetweenTags(git, prevTag, nextTag) {
   const results = await git.log({ from: prevTag, to: nextTag });
@@ -113,8 +113,9 @@ async function getCommitsBetweenTags(git, prevTag, nextTag) {
 async function parseCommitMessage() {
   const git = simpleGit(process.cwd());
 
-  const latestLog = git.log({ maxCount: 1 });
-  console.log(latestLog);
+  console.log(await git.log())
+  // const latestLog = await git.log({ maxCount: 1 });
+  // console.log(latestLog);
   const result = {};
   for (const outputName of outputs) {
     result[outputName] = null;
