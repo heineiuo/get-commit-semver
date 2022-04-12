@@ -123,7 +123,7 @@ async function parseCommitMessage() {
     const log = await git.log()
     const latestMessage = log.latest.message
     const parsed = semver.parse(latestMessage)
-    console.log(parsed)
+    console.log(latestMessage, parsed)
     if (parsed) {
       Object.assign(result, parsed)
       result.valid = true
@@ -3498,8 +3498,8 @@ async function run() {
     const result = await parseCommitMessage();
 
     for (const outputName of outputs) {
-      console.log(outputName, result[outputName] || null);
-      core.setOutput(outputName, result[outputName] || null);
+      console.log(outputName, result[outputName]);
+      core.setOutput(outputName, result[outputName]);
     }
   } catch (error) {
     console.log(error)
