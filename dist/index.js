@@ -112,14 +112,27 @@ async function getCommitsBetweenTags(git, prevTag, nextTag) {
 
 async function parseCommitMessage() {
   const git = simpleGit(process.cwd());
-
-  console.log(await git.log())
-  // const latestLog = await git.log({ maxCount: 1 });
-  // console.log(latestLog);
   const result = {};
   for (const outputName of outputs) {
     result[outputName] = null;
   }
+  const log = await git.log()
+  const latestMessage = log.latest.message
+  const parsed = semver.parse(latestMessage)
+  if (!parsed) {
+    result.valid = false
+  } else {
+    Object.assign(result, parsed)
+    if (parsed.build.length > 0) {
+      result.build_number = parseInt(parsed.build[0], 10)
+    }
+    if (parsed.prerelease.length > 0) {
+      result.is_prerelease = true
+      result.prerelease_name = parsed.prerelease[0]
+      result.prerelease_number = parsed.prerelease[1]
+    }
+  }
+
 
   return result;
 }

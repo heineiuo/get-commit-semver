@@ -12,6 +12,6 @@ for (const ver of [
   "v9.9.9+9999",
 ]) {
   console.log(ver);
-  console.log(semver.valid(ver);
+  console.log(semver.valid(ver));
   console.log(semver.parse(ver));
 }
