@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     steps:
       - name: Checkout code
@@ -33,26 +33,24 @@ jobs:
           CI: true
 
       - name: Create Changelogs
+        if: |
+          github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         id: changelog
-        run: |
-          CHANGELOG_TEXT="$(node bin/cli.js)"
-          RELEASE_TYPE="$(node bin/cli.js --release-type)"
-          echo "::set-output name=changelog_text::$CHANGELOG_TEXT"
-          echo "::set-output name=release_type::$RELEASE_TYPE"
+        uses: heineiuo/create-changelogs@master
 
-      - name: Run npm login
-        run: |
-          echo '//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}' > ~/.npmrc
+      # - name: Run npm login
+      #   run: |
+      #     echo '//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}' > ~/.npmrc
 
-      - name: Run npm publish
-        if: ${{ steps.changelog.outputs.release_type == 'release' }}
-        run: |
-          npm publish
+      # - name: Run npm publish
+      #   if: ${{ steps.changelog.outputs.release_type == 'release' }}
+      #   run: |
+      #     npm publish
 
-      - name: Run npm publish@next
-        if: ${{ steps.changelog.outputs.release_type == 'prerelease' }}
-        run: |
-          npm publish --tag next
+      # - name: Run npm publish@next
+      #   if: ${{ steps.changelog.outputs.release_type == 'prerelease' }}
+      #   run: |
+      #     npm publish --tag next
 
       - name: Create Release
         id: create_release
