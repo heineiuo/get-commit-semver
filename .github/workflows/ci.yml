@@ -37,6 +37,8 @@ jobs:
         uses: heineiuo/create-changelogs@master
 
       - name: Create Release
+        if: |
+          github.event_name == 'push' && steps.semver.outputs.valid == true
         id: create_release
         uses: actions/create-release@latest
         env:

@@ -131,6 +131,8 @@ async function parseCommitMessage() {
       result.is_prerelease = true
       result.prerelease_name = parsed.prerelease[0]
       result.prerelease_number = parsed.prerelease[1]
+    } else {
+      result.is_prerelease = false
     }
   }
 
@@ -3489,6 +3491,7 @@ async function run() {
     const result = await parseCommitMessage();
 
     for (const outputName of outputs) {
+      console.log(outputName, result[outputName] || null);
       core.setOutput(outputName, result[outputName] || null);
     }
   } catch (error) {

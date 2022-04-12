@@ -7,6 +7,7 @@ async function run() {
     const result = await parseCommitMessage();
 
     for (const outputName of outputs) {
+      console.log(outputName, result[outputName] || null);
       core.setOutput(outputName, result[outputName] || null);
     }
   } catch (error) {
