@@ -1,0 +1,30 @@
+name: "Get commit semver"
+description: "Get commit semver from git commit message"
+author: "heineiuo"
+outputs:
+  valid:
+    description: "{boolean} is raw value a valid semver"
+  raw: 
+    description: "{string} raw value"
+  major:
+    description: "{number|null} major"
+  minor:
+    description: "{number|null} minor"
+  patch:
+    description: "{number|null} patch"
+  is_prerelease:
+    description: "{boolean|null} is prerelease"
+  prerelease_name:
+    description: "{string|null} prerelease name, like beta in v1.2.3-beta.4"
+  prerelease_number:
+    description: "{number|null} prerelease number, like 4 in v1.2.3-beta.4"
+  build_number:
+    description: "{number|null} build number, like 55555 in v1.2.3+55555"
+  version:
+    description: "{string|null} version, like 1.2.3 in v1.2.3-beta.1"
+runs:
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: "tag"
+  color: "gray-dark"

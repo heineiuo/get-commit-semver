@@ -1,0 +1,36 @@
+{
+  "name": "get-commit-semver",
+  "version": "0.2.8",
+  "description": "get commit semver infomation",
+  "main": "src/main.js",
+  "bin": {
+    "get-commit-semver": "./bin/cli"
+  },
+  "files": [
+    "main.js",
+    "bin"
+  ],
+  "dependencies": {
+    "semver": "^7.3.2",
+    "simple-git": "^2.4.0",
+    "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.2.4",
+    "@zeit/ncc": "^0.22.1"
+  },
+  "scripts": {
+    "build": "ncc build src/actions.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heineiuo/get-commit-semver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heineiuo/get-commit-semver/issues"
+  },
+  "homepage": "https://github.com/heineiuo/get-commit-semver#readme"
+}
