@@ -10,6 +10,7 @@ for (const ver of [
   "v7",
   "v8.8.8-build.8888",
   "v9.9.9+9999",
+  "Update README.md"
 ]) {
   console.log(ver);
   console.log(semver.valid(ver));

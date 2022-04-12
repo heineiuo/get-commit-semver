@@ -21,27 +21,31 @@ async function parseCommitMessage() {
   for (const outputName of outputs) {
     result[outputName] = null;
   }
-  const log = await git.log()
-  const latestMessage = log.latest.message
-  const parsed = semver.parse(latestMessage)
-  if (!parsed) {
-    result.valid = false
-  } else {
-    Object.assign(result, parsed)
-    result.valid = true
-    if (parsed.build.length > 0) {
-      result.build_number = parseInt(parsed.build[0], 10)
-    }
-    if (parsed.prerelease.length > 0) {
-      result.is_prerelease = true
-      result.prerelease_name = parsed.prerelease[0]
-      result.prerelease_number = parsed.prerelease[1]
-    } else {
-      result.is_prerelease = false
-    }
-  }
+  result.valid = false
+  result.is_prerelease = false
 
-
+  try {
+    const log = await git.log()
+    const latestMessage = log.latest.message
+    const parsed = semver.parse(latestMessage)
+    if (parsed) {
+      Object.assign(result, parsed)
+      result.valid = true
+      if (parsed.build.length > 0) {
+        try {
+          result.build_number = parseInt(parsed.build[0], 10)
+        } catch(e){
+        }
+      }
+      if (parsed.prerelease.length > 0) {
+        result.is_prerelease = true
+        result.prerelease_name = parsed.prerelease[0]
+        result.prerelease_number = parsed.prerelease[1]
+      } else {
+        result.is_prerelease = false
+      }
+    }
+  } catch(e){}
   return result;
 }
 
