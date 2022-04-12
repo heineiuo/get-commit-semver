@@ -36,7 +36,7 @@ jobs:
         if: |
           github.event_name == 'push' && steps.semver.outputs.valid == 'true'
         with:
-          tag: ${{ steps.semver.raw }}
+          tag: ${{ steps.semver.outputs.raw }}
 
       - name: Create Changelogs
         if: |
@@ -52,8 +52,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.semver.raw }}
-          release_name: ${{ steps.semver.raw }}
+          tag_name: ${{ steps.semver.outputs.raw }}
+          release_name: ${{ steps.semver.outputs.raw }}
           body: ${{ steps.changelog.outputs.changelog_text }}
           draft: false
           prerelease: ${{ steps.changelog.outputs.release_type == 'prerelease' }}
