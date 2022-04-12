@@ -1,6 +1,6 @@
 {
   "name": "get-commit-semver",
-  "version": "0.2.8",
+  "version": "1.3.0",
   "description": "get commit semver infomation",
   "main": "src/main.js",
   "bin": {
