@@ -28,6 +28,7 @@ async function parseCommitMessage() {
     const log = await git.log()
     const latestMessage = log.latest.message
     const parsed = semver.parse(latestMessage)
+    console.log(parsed)
     if (parsed) {
       Object.assign(result, parsed)
       result.valid = true
@@ -45,7 +46,9 @@ async function parseCommitMessage() {
         result.is_prerelease = false
       }
     }
-  } catch(e){}
+  } catch(e){
+    console.log(e)
+  }
   return result;
 }
 

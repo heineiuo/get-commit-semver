@@ -123,6 +123,7 @@ async function parseCommitMessage() {
     const log = await git.log()
     const latestMessage = log.latest.message
     const parsed = semver.parse(latestMessage)
+    console.log(parsed)
     if (parsed) {
       Object.assign(result, parsed)
       result.valid = true
@@ -140,7 +141,9 @@ async function parseCommitMessage() {
         result.is_prerelease = false
       }
     }
-  } catch(e){}
+  } catch(e){
+    console.log(e)
+  }
   return result;
 }
 
@@ -3499,6 +3502,7 @@ async function run() {
       core.setOutput(outputName, result[outputName] || null);
     }
   } catch (error) {
+    console.log(error)
     core.setFailed(error.message);
   }
 }
