@@ -28,6 +28,7 @@ async function parseCommitMessage() {
     result.valid = false
   } else {
     Object.assign(result, parsed)
+    result.valid = true
     if (parsed.build.length > 0) {
       result.build_number = parseInt(parsed.build[0], 10)
     }
@@ -35,6 +36,8 @@ async function parseCommitMessage() {
       result.is_prerelease = true
       result.prerelease_name = parsed.prerelease[0]
       result.prerelease_number = parsed.prerelease[1]
+    } else {
+      result.is_prerelease = false
     }
   }
 

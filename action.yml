@@ -21,7 +21,7 @@ outputs:
   build_number:
     description: "{number|null} build number, like 55555 in v1.2.3+55555"
   version:
-    description: "{string|null} version, like 1.2.3 in v1.2.3-beta.1"
+    description: "{string|null} version, like 1.2.3-beta.1 in v1.2.3-beta.1 or 1.2.3 in v1.2.3+4444"
 runs:
   using: "node16"
   main: "dist/index.js"

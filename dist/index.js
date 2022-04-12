@@ -123,6 +123,7 @@ async function parseCommitMessage() {
     result.valid = false
   } else {
     Object.assign(result, parsed)
+    result.valid = true
     if (parsed.build.length > 0) {
       result.build_number = parseInt(parsed.build[0], 10)
     }
@@ -3488,11 +3489,9 @@ async function run() {
     const result = await parseCommitMessage();
 
     for (const outputName of outputs) {
-      console.log(outputName, result[outputName] || null);
       core.setOutput(outputName, result[outputName] || null);
     }
   } catch (error) {
-    console.log(error);
     core.setFailed(error.message);
   }
 }
