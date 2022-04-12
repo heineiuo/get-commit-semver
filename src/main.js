@@ -28,7 +28,7 @@ async function parseCommitMessage() {
     const log = await git.log()
     const latestMessage = log.latest.message
     const parsed = semver.parse(latestMessage)
-    console.log(parsed)
+    console.log(latestMessage, parsed)
     if (parsed) {
       Object.assign(result, parsed)
       result.valid = true
