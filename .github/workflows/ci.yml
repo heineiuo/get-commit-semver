@@ -1,7 +1,9 @@
+name: CI
+
 on:
   push:
-
-name: CI
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,6 +21,12 @@ jobs:
       - run: |
           git fetch --prune --unshallow
 
+      - name: Echo Infomation
+        run: |
+          echo "event name: ${{github.event_name}}"
+          echo "event action: ${{github.event.action}}"
+          echo "event number: ${{github.event.number}}"
+    
       - name: Get semver
         id: semver
         uses: heineiuo/get-commit-semver@main
