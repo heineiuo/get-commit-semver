@@ -1,13 +1,11 @@
 on:
   push:
-    tags:
-      - "v*"
 
-name: Release
+name: CI
 
 jobs:
   build:
-    name: Create Release
+    name: CI
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,36 +19,22 @@ jobs:
       - run: |
           git fetch --prune --unshallow
 
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-
-      # - name: Run npm build
-      #   run: |
-      #     npm install
-      #   env:
-      #     CI: true
+      - name: Get semver
+        id: semver
+        uses: heineiuo/get-commit-semver@main
+    
+      - name: Create tag
+        uses: rickstaa/action-create-tag@v1
+        if: |
+          github.event_name == 'push' && steps.semver.outputs.valid == true
+        with:
+          tag: ${{ steps.semver.raw }}
 
       - name: Create Changelogs
         if: |
-          github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+          github.event_name == 'push' && steps.semver.outputs.valid == true
         id: changelog
         uses: heineiuo/create-changelogs@master
-
-      # - name: Run npm login
-      #   run: |
-      #     echo '//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}' > ~/.npmrc
-
-      # - name: Run npm publish
-      #   if: ${{ steps.changelog.outputs.release_type == 'release' }}
-      #   run: |
-      #     npm publish
-
-      # - name: Run npm publish@next
-      #   if: ${{ steps.changelog.outputs.release_type == 'prerelease' }}
-      #   run: |
-      #     npm publish --tag next
 
       - name: Create Release
         id: create_release
@@ -58,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: ${{ steps.semver.raw }}
+          release_name: ${{ steps.semver.raw }}
           body: ${{ steps.changelog.outputs.changelog_text }}
           draft: false
           prerelease: ${{ steps.changelog.outputs.release_type == 'prerelease' }}
