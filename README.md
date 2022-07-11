@@ -1,5 +1,8 @@
 # Get commit semver
 
+
+***DEPRECATED! Please migrate to https://github.com/heineiuo/create-changelogs***
+
 An action can get semver infomation from latest commit's message.
 
 
